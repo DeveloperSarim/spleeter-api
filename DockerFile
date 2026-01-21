@@ -1,0 +1,13 @@
+# Use Spleeter official Docker image with Python + Spleeter installed
+FROM researchdeezer/spleeter
+
+WORKDIR /app
+
+COPY . .
+
+# Install FastAPI and Uvicorn
+RUN pip install fastapi uvicorn python-multipart
+
+EXPOSE 8000
+
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
