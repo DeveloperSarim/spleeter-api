@@ -1,12 +1,18 @@
-# Use Spleeter official Docker image with Python + Spleeter installed
-FROM researchdeezer/spleeter
+FROM python:3.9-slim
 
 WORKDIR /app
 
-COPY . .
+# Install system dependencies required for spleeter and ffmpeg
+RUN apt-get update && apt-get install -y \
+    ffmpeg \
+    && rm -rf /var/lib/apt/lists/*
 
-# Install FastAPI and Uvicorn
-RUN pip install fastapi uvicorn python-multipart
+COPY requirements.txt .
+
+# Install Python dependencies
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY . .
 
 EXPOSE 8000
 
